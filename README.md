@@ -1,4 +1,3 @@
 # CV
 CV website.
-
-trying
+This application is work in progress.
