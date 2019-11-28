@@ -3,11 +3,29 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const hbs = require('hbs');
+const fs = require('fs');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const app = express();
+
+// Use all partials
+
+const partialsDir = __dirname + '/views/static';
+
+const filenames = fs.readdirSync(partialsDir);
+
+filenames.forEach(function (filename) {
+  let matches = /^([^.]+).hbs$/.exec(filename);
+  if (!matches) {
+    return;
+  }
+  let name = matches[1];
+  let template = fs.readFileSync(partialsDir + '/' + filename, 'utf8');
+  hbs.registerPartial(name, template);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
